@@ -5,11 +5,27 @@
 			"referenceName": "ls_AzureDataLakeStorage1_rsb01",
 			"type": "LinkedServiceReference"
 		},
+		"parameters": {
+			"ds_container": {
+				"type": "string"
+			},
+			"ds_directory": {
+				"type": "string"
+			}
+		},
 		"annotations": [],
 		"type": "Parquet",
 		"typeProperties": {
 			"location": {
-				"type": "AzureBlobFSLocation"
+				"type": "AzureBlobFSLocation",
+				"folderPath": {
+					"value": "@dataset().ds_directory",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().ds_container",
+					"type": "Expression"
+				}
 			},
 			"compressionCodec": "snappy"
 		},
