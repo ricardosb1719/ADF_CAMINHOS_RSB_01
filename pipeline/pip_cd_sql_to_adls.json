@@ -1,5 +1,5 @@
 {
-	"name": "pipeline2",
+	"name": "pip_cd_sql_to_adls",
 	"properties": {
 		"activities": [
 			{
