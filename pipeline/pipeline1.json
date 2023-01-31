@@ -38,6 +38,164 @@
 					"enableStaging": false,
 					"translator": {
 						"type": "TabularTranslator",
+						"mappings": [
+							{
+								"source": {
+									"name": "Region",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Region",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Country",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "Country",
+									"type": "String",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Item Type",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ItemType",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Sales Channel",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "SalesChannel",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Order Priority",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "OrderPriority",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Order Date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "OrderDate",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Order ID",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "OrderID",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Ship Date",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "ShipDate",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Units Sold",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "UnitsSold",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Unit Price",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "UnitPrice",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Unit Cost",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "UnitCost",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Total Revenue",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "TotalRevenue",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Total Cost",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "TotalCost",
+									"physicalType": "UTF8"
+								}
+							},
+							{
+								"source": {
+									"name": "Total Profit",
+									"type": "String",
+									"physicalType": "String"
+								},
+								"sink": {
+									"name": "TotalProfit",
+									"physicalType": "UTF8"
+								}
+							}
+						],
 						"typeConversion": true,
 						"typeConversionSettings": {
 							"allowDataTruncation": true,
