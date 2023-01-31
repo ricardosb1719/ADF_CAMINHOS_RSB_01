@@ -43,17 +43,51 @@
 				"inputs": [
 					{
 						"referenceName": "AzureSqlTable1_gen",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"ds_name_table": {
+								"value": "@pipeline().parameters.table_name_par",
+								"type": "Expression"
+							},
+							"ds_schema_table": {
+								"value": "@pipeline().parameters.schema_par",
+								"type": "Expression"
+							}
+						}
 					}
 				],
 				"outputs": [
 					{
 						"referenceName": "Parquet1",
-						"type": "DatasetReference"
+						"type": "DatasetReference",
+						"parameters": {
+							"ds_container": {
+								"value": "@pipeline().parameters.container_par",
+								"type": "Expression"
+							},
+							"ds_directory": {
+								"value": "@pipeline().parameters.directory_par",
+								"type": "Expression"
+							}
+						}
 					}
 				]
 			}
 		],
+		"parameters": {
+			"schema_par": {
+				"type": "string"
+			},
+			"table_name_par": {
+				"type": "string"
+			},
+			"container_par": {
+				"type": "string"
+			},
+			"directory_par": {
+				"type": "string"
+			}
+		},
 		"annotations": []
 	}
 }
