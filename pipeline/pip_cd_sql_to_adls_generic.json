@@ -7,7 +7,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "Set LastModified",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -81,7 +81,7 @@
 				]
 			},
 			{
-				"name": "Lookup1",
+				"name": "LastModified",
 				"type": "Lookup",
 				"dependsOn": [],
 				"policy": {
@@ -95,7 +95,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select * from dbo.watermark where table_name = '@{pipeline().parameters.table_name_par}'",
+						"sqlReaderQuery": "select isnull(Last_Modified,'1900-01-01') Last_Modified from dbo.watermark where table_name = '@{pipeline().parameters.table_name_par}'",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -114,6 +114,26 @@
 						}
 					}
 				}
+			},
+			{
+				"name": "Set LastModified",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "LastModified",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "last_modified",
+					"value": {
+						"value": "@activity('LastModified').output.firstRow.Last_Modified",
+						"type": "Expression"
+					}
+				}
 			}
 		],
 		"parameters": {
@@ -128,6 +148,11 @@
 			},
 			"directory_par": {
 				"type": "string"
+			}
+		},
+		"variables": {
+			"last_modified": {
+				"type": "String"
 			}
 		},
 		"annotations": []
