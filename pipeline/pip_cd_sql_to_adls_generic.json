@@ -7,7 +7,7 @@
 				"type": "Copy",
 				"dependsOn": [
 					{
-						"activity": "Set variable1",
+						"activity": "Wait1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -24,7 +24,7 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select * from SalesLT.Product",
+						"sqlReaderQuery": "select * from @{pipeline().parameters.schema_par}.@{pipeline().parameters.table_name_par} \nwhere ModifiedDate > '@{variables('last_modified')}' \nand ModifiedDate <= '@{variables('max_valor_escrito')}'",
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -116,9 +116,16 @@
 				}
 			},
 			{
-				"name": "Set LastModified",
+				"name": "Set ultimo valor lido",
 				"type": "SetVariable",
-				"dependsOn": [],
+				"dependsOn": [
+					{
+						"activity": "LastModified",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
 				"userProperties": [],
 				"typeProperties": {
 					"variableName": "last_modified",
@@ -129,17 +136,24 @@
 				}
 			},
 			{
-				"name": "Set variable1",
+				"name": "Set ultimo valor escrito",
 				"type": "SetVariable",
 				"dependsOn": [
 					{
-						"activity": "Set LastModified",
+						"activity": "MaxLastModified",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					}
 				],
-				"userProperties": []
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "max_valor_escrito",
+					"value": {
+						"value": "@activity('MaxLastModified').output.firstRow.ModifiedDate",
+						"type": "Expression"
+					}
+				}
 			},
 			{
 				"name": "MaxLastModified",
@@ -181,13 +195,13 @@
 				"type": "Wait",
 				"dependsOn": [
 					{
-						"activity": "LastModified",
+						"activity": "Set ultimo valor lido",
 						"dependencyConditions": [
 							"Succeeded"
 						]
 					},
 					{
-						"activity": "MaxLastModified",
+						"activity": "Set ultimo valor escrito",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -201,20 +215,30 @@
 		],
 		"parameters": {
 			"schema_par": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "SalesLT"
 			},
 			"table_name_par": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "Product"
 			},
 			"container_par": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "landing"
 			},
 			"directory_par": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "Adventureworks/Incremental/Product"
 			}
 		},
 		"variables": {
 			"last_modified": {
+				"type": "String"
+			},
+			"max_last_modified": {
+				"type": "String"
+			},
+			"max_valor_escrito": {
 				"type": "String"
 			}
 		},
