@@ -52,7 +52,7 @@
 				"typeProperties": {
 					"variableName": "last_modified",
 					"value": {
-						"value": "@activity('LastModified').output.firstRow.LastModified",
+						"value": "@activity('LastModified').output.firstRow.Last_Modified",
 						"type": "Expression"
 					}
 				}
