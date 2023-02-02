@@ -289,20 +289,16 @@
 		],
 		"parameters": {
 			"schema_par": {
-				"type": "string",
-				"defaultValue": "SalesLT"
+				"type": "string"
 			},
 			"table_name_par": {
-				"type": "string",
-				"defaultValue": "Product"
+				"type": "string"
 			},
 			"container_par": {
-				"type": "string",
-				"defaultValue": "landing"
+				"type": "string"
 			},
 			"directory_par": {
-				"type": "string",
-				"defaultValue": "Adventureworks/Incremental/Product"
+				"type": "string"
 			}
 		},
 		"variables": {
