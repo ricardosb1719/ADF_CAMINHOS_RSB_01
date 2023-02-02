@@ -294,7 +294,7 @@
 			},
 			"table_name_par": {
 				"type": "string",
-				"defaultValue": "Product"
+				"defaultValue": "Customer"
 			},
 			"container_par": {
 				"type": "string",
@@ -302,7 +302,7 @@
 			},
 			"directory_par": {
 				"type": "string",
-				"defaultValue": "Adventureworks/Incremental/Product"
+				"defaultValue": "Adventureworks/Incremental/Customer"
 			}
 		},
 		"variables": {
