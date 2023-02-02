@@ -1,5 +1,5 @@
 {
-	"name": "pip_cd_sql_to_adls_product1",
+	"name": "pip_cd_sql_to_adls_product",
 	"properties": {
 		"activities": [
 			{
