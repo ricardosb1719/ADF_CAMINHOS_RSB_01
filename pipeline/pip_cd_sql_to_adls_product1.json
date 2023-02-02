@@ -1,5 +1,5 @@
 {
-	"name": "pip_cd_sql_to_adls_generic",
+	"name": "pip_cd_sql_to_adls_product1",
 	"properties": {
 		"activities": [
 			{
@@ -289,16 +289,20 @@
 		],
 		"parameters": {
 			"schema_par": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "SalesLT"
 			},
 			"table_name_par": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "Product"
 			},
 			"container_par": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "landing"
 			},
 			"directory_par": {
-				"type": "string"
+				"type": "string",
+				"defaultValue": "Adventureworks/Incremental/Product"
 			}
 		},
 		"variables": {
