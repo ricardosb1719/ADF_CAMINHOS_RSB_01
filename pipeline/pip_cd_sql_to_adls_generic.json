@@ -256,6 +256,33 @@
 								"scriptBlockExecutionTimeout": "02:00:00"
 							}
 						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Web1",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": "https://prod-46.eastus2.logic.azure.com:443/workflows/ec7ce38722e94532b2052146085e948f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=KpQRuoGDEATIVSWkpSOEKwKpE1lGpS7KpBrpzsZKb7E",
+								"method": "POST",
+								"body": {
+									"RUN_ID": "@{pipeline().RunId}",
+									"TABLE_NAME": "@{pipeline().parameters.table_name_par}",
+									"TIMESTAMP": "@{utcnow()}",
+									"ERRODESCRIPTION": "NAO EXISTE NOVOS REGISTROS PARA ESTA TABELA",
+									"TO": "ricardosb280@gmail.com",
+									"SUBJECT": "INGESTAO DIARIA"
+								}
+							}
+						}
 					]
 				}
 			}
