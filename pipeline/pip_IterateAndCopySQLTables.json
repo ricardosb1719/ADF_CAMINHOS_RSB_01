@@ -1,0 +1,338 @@
+{
+	"name": "pip_IterateAndCopySQLTables",
+	"properties": {
+		"activities": [
+			{
+				"name": "LastModified",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "select isnull(Last_Modified,'1900-01-01') Last_Modified from dbo.watermark where table_name = '@{pipeline().parameters.table_name_par}'",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlTable1_gen",
+						"type": "DatasetReference",
+						"parameters": {
+							"ds_name_table": {
+								"value": "@pipeline().parameters.table_name_par",
+								"type": "Expression"
+							},
+							"ds_schema_table": {
+								"value": "@pipeline().parameters.schema_par",
+								"type": "Expression"
+							}
+						}
+					}
+				}
+			},
+			{
+				"name": "Set ultimo valor lido",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "LastModified",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "last_modified",
+					"value": {
+						"value": "@activity('LastModified').output.firstRow.Last_Modified",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "Set ultimo valor escrito",
+				"type": "SetVariable",
+				"dependsOn": [
+					{
+						"activity": "MaxLastModified",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"variableName": "max_valor_escrito",
+					"value": {
+						"value": "@activity('MaxLastModified').output.firstRow.ModifiedDate",
+						"type": "Expression"
+					}
+				}
+			},
+			{
+				"name": "MaxLastModified",
+				"type": "Lookup",
+				"dependsOn": [],
+				"policy": {
+					"timeout": "0.12:00:00",
+					"retry": 0,
+					"retryIntervalInSeconds": 30,
+					"secureOutput": false,
+					"secureInput": false
+				},
+				"userProperties": [],
+				"typeProperties": {
+					"source": {
+						"type": "AzureSqlSource",
+						"sqlReaderQuery": {
+							"value": "SELECT max(ModifiedDate) as ModifiedDate  FROM @{pipeline().parameters.schema_par}.@{pipeline().parameters.table_name_par}",
+							"type": "Expression"
+						},
+						"queryTimeout": "02:00:00",
+						"partitionOption": "None"
+					},
+					"dataset": {
+						"referenceName": "AzureSqlTable1_gen",
+						"type": "DatasetReference",
+						"parameters": {
+							"ds_name_table": {
+								"value": "@pipeline().parameters.table_name_par",
+								"type": "Expression"
+							},
+							"ds_schema_table": {
+								"value": "@pipeline().parameters.schema_par",
+								"type": "Expression"
+							}
+						}
+					}
+				}
+			},
+			{
+				"name": "Wait1",
+				"type": "Wait",
+				"dependsOn": [
+					{
+						"activity": "Set ultimo valor lido",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					},
+					{
+						"activity": "Set ultimo valor escrito",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"waitTimeInSeconds": 1
+				}
+			},
+			{
+				"name": "If Condition1",
+				"type": "IfCondition",
+				"dependsOn": [
+					{
+						"activity": "Wait1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"expression": {
+						"value": "@equals(variables('last_modified'),variables('max_valor_escrito'))",
+						"type": "Expression"
+					},
+					"ifFalseActivities": [
+						{
+							"name": "Copy data1",
+							"type": "Copy",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"source": {
+									"type": "AzureSqlSource",
+									"sqlReaderQuery": {
+										"value": "select * from @{pipeline().parameters.schema_par}.@{pipeline().parameters.table_name_par} \nwhere ModifiedDate > '@{variables('last_modified')}' \nand ModifiedDate <= '@{variables('max_valor_escrito')}'",
+										"type": "Expression"
+									},
+									"queryTimeout": "02:00:00",
+									"partitionOption": "None"
+								},
+								"sink": {
+									"type": "ParquetSink",
+									"storeSettings": {
+										"type": "AzureBlobFSWriteSettings"
+									},
+									"formatSettings": {
+										"type": "ParquetWriteSettings"
+									}
+								},
+								"enableStaging": false,
+								"translator": {
+									"type": "TabularTranslator",
+									"typeConversion": true,
+									"typeConversionSettings": {
+										"allowDataTruncation": true,
+										"treatBooleanAsNumber": false
+									}
+								}
+							},
+							"inputs": [
+								{
+									"referenceName": "AzureSqlTable1_gen",
+									"type": "DatasetReference",
+									"parameters": {
+										"ds_name_table": {
+											"value": "@pipeline().parameters.table_name_par",
+											"type": "Expression"
+										},
+										"ds_schema_table": {
+											"value": "@pipeline().parameters.schema_par",
+											"type": "Expression"
+										}
+									}
+								}
+							],
+							"outputs": [
+								{
+									"referenceName": "Parquet1",
+									"type": "DatasetReference",
+									"parameters": {
+										"ds_container": {
+											"value": "@pipeline().parameters.container_par",
+											"type": "Expression"
+										},
+										"ds_directory": {
+											"value": "@pipeline().parameters.directory_par",
+											"type": "Expression"
+										}
+									}
+								}
+							]
+						},
+						{
+							"name": "Update watermark",
+							"type": "Script",
+							"dependsOn": [
+								{
+									"activity": "Copy data1",
+									"dependencyConditions": [
+										"Succeeded"
+									]
+								}
+							],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"linkedServiceName": {
+								"referenceName": "ls_AzureSqlDatabase1_rsb01",
+								"type": "LinkedServiceReference"
+							},
+							"typeProperties": {
+								"scripts": [
+									{
+										"type": "NonQuery",
+										"text": {
+											"value": "update dbo.watermark\nset Last_Modified = '@{variables('max_valor_escrito')}'\nwhere table_name = '@{pipeline().parameters.table_name_par}'",
+											"type": "Expression"
+										}
+									}
+								],
+								"scriptBlockExecutionTimeout": "02:00:00"
+							}
+						}
+					],
+					"ifTrueActivities": [
+						{
+							"name": "Web1",
+							"type": "WebActivity",
+							"dependsOn": [],
+							"policy": {
+								"timeout": "0.12:00:00",
+								"retry": 0,
+								"retryIntervalInSeconds": 30,
+								"secureOutput": false,
+								"secureInput": false
+							},
+							"userProperties": [],
+							"typeProperties": {
+								"url": "https://prod-46.eastus2.logic.azure.com:443/workflows/ec7ce38722e94532b2052146085e948f/triggers/manual/paths/invoke?api-version=2016-10-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=KpQRuoGDEATIVSWkpSOEKwKpE1lGpS7KpBrpzsZKb7E",
+								"method": "POST",
+								"body": {
+									"RUN_ID": "@{pipeline().RunId}",
+									"TABLE_NAME": "@{pipeline().parameters.table_name_par}",
+									"TIMESTAMP": "@{utcnow()}",
+									"ERRODESCRIPTION": "NAO EXISTE NOVOS REGISTROS PARA ESTA TABELA",
+									"TO": "ricardosb280@gmail.com",
+									"SUBJECT": "INGESTAO DIARIA"
+								}
+							}
+						}
+					]
+				}
+			},
+			{
+				"name": "ForEach1",
+				"type": "ForEach",
+				"dependsOn": [],
+				"userProperties": []
+			}
+		],
+		"parameters": {
+			"schema_par": {
+				"type": "string"
+			},
+			"table_name_par": {
+				"type": "string"
+			},
+			"container_par": {
+				"type": "string"
+			},
+			"directory_par": {
+				"type": "string"
+			},
+			"table_list": {
+				"type": "array"
+			}
+		},
+		"variables": {
+			"last_modified": {
+				"type": "String"
+			},
+			"max_last_modified": {
+				"type": "String"
+			},
+			"max_valor_escrito": {
+				"type": "String"
+			}
+		},
+		"annotations": []
+	}
+}
