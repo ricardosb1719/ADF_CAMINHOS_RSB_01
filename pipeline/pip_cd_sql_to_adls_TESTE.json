@@ -362,8 +362,7 @@
 				"defaultValue": "SalesLT"
 			},
 			"table_name_par": {
-				"type": "string",
-				"defaultValue": "Customer"
+				"type": "string"
 			},
 			"container_par": {
 				"type": "string",
