@@ -367,11 +367,11 @@
 			},
 			"container_par": {
 				"type": "string",
-				"defaultValue": "landing"
+				"defaultValue": "bronze"
 			},
 			"directory_par": {
 				"type": "string",
-				"defaultValue": "Adventureworks/Incremental/Customer"
+				"defaultValue": "Adventureworks/Incremental"
 			}
 		},
 		"variables": {
