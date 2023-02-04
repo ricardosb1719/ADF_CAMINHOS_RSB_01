@@ -354,25 +354,11 @@
 						}
 					]
 				}
-			},
-			{
-				"name": "Execute Pipeline1",
-				"type": "ExecutePipeline",
-				"dependsOn": [],
-				"userProperties": [],
-				"typeProperties": {
-					"pipeline": {
-						"referenceName": "pip_cd_sql_to_adls_generic",
-						"type": "PipelineReference"
-					},
-					"waitOnCompletion": true
-				}
 			}
 		],
 		"parameters": {
 			"schema_par": {
-				"type": "string",
-				"defaultValue": "SalesLT"
+				"type": "string"
 			},
 			"table_name_par": {
 				"type": "string"
