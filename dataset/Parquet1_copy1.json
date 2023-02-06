@@ -1,0 +1,41 @@
+{
+	"name": "Parquet1_copy1",
+	"properties": {
+		"linkedServiceName": {
+			"referenceName": "ls_AzureDataLakeStorage1_rsb01",
+			"type": "LinkedServiceReference"
+		},
+		"parameters": {
+			"ds_container": {
+				"type": "string"
+			},
+			"ds_directory": {
+				"type": "string"
+			},
+			"ds_fileName": {
+				"type": "String"
+			}
+		},
+		"annotations": [],
+		"type": "Parquet",
+		"typeProperties": {
+			"location": {
+				"type": "AzureBlobFSLocation",
+				"fileName": {
+					"value": "@dataset().ds_fileName",
+					"type": "Expression"
+				},
+				"folderPath": {
+					"value": "@dataset().ds_directory",
+					"type": "Expression"
+				},
+				"fileSystem": {
+					"value": "@dataset().ds_container",
+					"type": "Expression"
+				}
+			},
+			"compressionCodec": "snappy"
+		},
+		"schema": []
+	}
+}
