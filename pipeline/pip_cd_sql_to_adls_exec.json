@@ -1,5 +1,5 @@
 {
-	"name": "pip_cd_sql_to_adls_executa_pip_copy1",
+	"name": "pip_cd_sql_to_adls_exec",
 	"properties": {
 		"activities": [
 			{
@@ -64,7 +64,7 @@
 							"userProperties": [],
 							"typeProperties": {
 								"pipeline": {
-									"referenceName": "pip_cd_sql_to_adls_incremental",
+									"referenceName": "pip_cd_sql_to_adls_inc",
 									"type": "PipelineReference"
 								},
 								"waitOnCompletion": true,

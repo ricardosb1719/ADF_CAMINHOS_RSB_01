@@ -1,5 +1,5 @@
 {
-	"name": "pip_cd_sql_to_adls_TESTE_copy2",
+	"name": "pip_cd_sql_to_adls_inc",
 	"properties": {
 		"activities": [
 			{
