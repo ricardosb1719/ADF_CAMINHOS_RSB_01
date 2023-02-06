@@ -1,5 +1,5 @@
 {
-	"name": "pip_cd_sql_to_adls_TESTE",
+	"name": "pip_cd_sql_to_adls_incremental",
 	"properties": {
 		"activities": [
 			{
@@ -327,7 +327,7 @@
 			}
 		},
 		"folder": {
-			"name": "Teste"
+			"name": "Pipeline_entrega"
 		},
 		"annotations": []
 	}

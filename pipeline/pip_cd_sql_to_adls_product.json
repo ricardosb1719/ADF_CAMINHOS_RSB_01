@@ -17,7 +17,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "select isnull(Last_Modified,'1900-01-01') Last_Modified from dbo.watermark where table_name = '@{pipeline().parameters.table_name_par}'",
+						"sqlReaderQuery": {
+							"value": "select isnull(Last_Modified,'1900-01-01') Last_Modified from dbo.watermark where table_name = '@{pipeline().parameters.table_name_par}'",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -92,7 +95,10 @@
 				"typeProperties": {
 					"source": {
 						"type": "AzureSqlSource",
-						"sqlReaderQuery": "SELECT max(ModifiedDate) as ModifiedDate  FROM @{pipeline().parameters.schema_par}.@{pipeline().parameters.table_name_par}",
+						"sqlReaderQuery": {
+							"value": "SELECT max(ModifiedDate) as ModifiedDate  FROM @{pipeline().parameters.schema_par}.@{pipeline().parameters.table_name_par}",
+							"type": "Expression"
+						},
 						"queryTimeout": "02:00:00",
 						"partitionOption": "None"
 					},
@@ -167,7 +173,10 @@
 							"typeProperties": {
 								"source": {
 									"type": "AzureSqlSource",
-									"sqlReaderQuery": "select * from @{pipeline().parameters.schema_par}.@{pipeline().parameters.table_name_par} \nwhere ModifiedDate > '@{variables('last_modified')}' \nand ModifiedDate <= '@{variables('max_valor_escrito')}'",
+									"sqlReaderQuery": {
+										"value": "select * from @{pipeline().parameters.schema_par}.@{pipeline().parameters.table_name_par} \nwhere ModifiedDate > '@{variables('last_modified')}' \nand ModifiedDate <= '@{variables('max_valor_escrito')}'",
+										"type": "Expression"
+									},
 									"queryTimeout": "02:00:00",
 									"partitionOption": "None"
 								},
@@ -250,7 +259,10 @@
 								"scripts": [
 									{
 										"type": "NonQuery",
-										"text": "update dbo.watermark\nset Last_Modified = '@{variables('max_valor_escrito')}'\nwhere table_name = '@{pipeline().parameters.table_name_par}'"
+										"text": {
+											"value": "update dbo.watermark\nset Last_Modified = '@{variables('max_valor_escrito')}'\nwhere table_name = '@{pipeline().parameters.table_name_par}'",
+											"type": "Expression"
+										}
 									}
 								],
 								"scriptBlockExecutionTimeout": "02:00:00"
@@ -342,6 +354,9 @@
 			"max_valor_escrito": {
 				"type": "String"
 			}
+		},
+		"folder": {
+			"name": "Pipelines_gereric"
 		},
 		"annotations": []
 	}

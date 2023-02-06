@@ -1,5 +1,5 @@
 {
-	"name": "pip_cd_sql_to_adls_executa_pip",
+	"name": "pip_cd_sql_to_adls_executa_pip_copy1",
 	"properties": {
 		"activities": [
 			{
@@ -106,9 +106,6 @@
 			"max_valor_escrito": {
 				"type": "String"
 			}
-		},
-		"folder": {
-			"name": "Pipeline_entrega"
 		},
 		"annotations": []
 	}
