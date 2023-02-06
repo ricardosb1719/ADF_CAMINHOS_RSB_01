@@ -70,7 +70,11 @@
 								"waitOnCompletion": true,
 								"parameters": {
 									"schema_par": "@{item().schemaName}",
-									"table_name_par": "@{item().tableName}"
+									"table_name_par": "@{item().tableName}",
+									"directory_par": {
+										"value": "@concat('@{item().origem}','/','@{item().schemaName}','/','@{item().tableName}')",
+										"type": "Expression"
+									}
 								}
 							}
 						}
