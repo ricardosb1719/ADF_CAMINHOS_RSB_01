@@ -71,10 +71,7 @@
 								"parameters": {
 									"schema_par": "@{item().schemaName}",
 									"table_name_par": "@{item().tableName}",
-									"directory_par": {
-										"value": "@concat('@{item().origem}','/','@{item().schemaName}','/','@{item().tableName}')",
-										"type": "Expression"
-									}
+									"directory_par": "@{item().origem/@{item().tipo_ingestao}/@{item().tableName}"
 								}
 							}
 						}
