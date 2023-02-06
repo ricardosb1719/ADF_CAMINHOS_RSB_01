@@ -183,16 +183,7 @@
 								"sink": {
 									"type": "ParquetSink",
 									"storeSettings": {
-										"type": "AzureBlobFSWriteSettings",
-										"metadata": [
-											{
-												"name": "filename",
-												"value": {
-													"value": "@pipeline().parameters.table_name_par",
-													"type": "Expression"
-												}
-											}
-										]
+										"type": "AzureBlobFSWriteSettings"
 									},
 									"formatSettings": {
 										"type": "ParquetWriteSettings"
