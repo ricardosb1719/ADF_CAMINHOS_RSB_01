@@ -43,7 +43,7 @@
 				"type": "ForEach",
 				"dependsOn": [
 					{
-						"activity": "Lookup1",
+						"activity": "Filter1",
 						"dependencyConditions": [
 							"Succeeded"
 						]
@@ -52,7 +52,7 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Lookup1').output.value",
+						"value": "@activity('Filter1').output",
 						"type": "Expression"
 					},
 					"isSequential": false,
@@ -75,6 +75,29 @@
 							}
 						}
 					]
+				}
+			},
+			{
+				"name": "Filter1",
+				"type": "Filter",
+				"dependsOn": [
+					{
+						"activity": "Lookup1",
+						"dependencyConditions": [
+							"Succeeded"
+						]
+					}
+				],
+				"userProperties": [],
+				"typeProperties": {
+					"items": {
+						"value": "@activity('Lookup1').output.value",
+						"type": "Expression"
+					},
+					"condition": {
+						"value": "@contains(item(),'Sim')",
+						"type": "Expression"
+					}
 				}
 			}
 		],
