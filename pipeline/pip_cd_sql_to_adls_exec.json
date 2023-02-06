@@ -91,11 +91,11 @@
 				"userProperties": [],
 				"typeProperties": {
 					"items": {
-						"value": "@activity('Lookup1').output.value",
+						"value": "@activity('Lookup1').output.value.ingerir",
 						"type": "Expression"
 					},
 					"condition": {
-						"value": "@contains(item(),'Sim')",
+						"value": "@equals(item(),'Sim')",
 						"type": "Expression"
 					}
 				}
