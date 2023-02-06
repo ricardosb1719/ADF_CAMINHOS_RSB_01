@@ -69,8 +69,8 @@
 								},
 								"waitOnCompletion": true,
 								"parameters": {
-									"schema_par": "@{item{}.schemaName}",
-									"table_name_par": "@{item{}.tableName}"
+									"schema_par": "@{item().schemaName}",
+									"table_name_par": "@{item().tableName}"
 								}
 							}
 						}
