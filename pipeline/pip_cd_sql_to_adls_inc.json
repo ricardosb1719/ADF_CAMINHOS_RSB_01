@@ -311,8 +311,7 @@
 				"defaultValue": "bronze"
 			},
 			"directory_par": {
-				"type": "string",
-				"defaultValue": "Adventureworks/Incremental"
+				"type": "string"
 			}
 		},
 		"variables": {

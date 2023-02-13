@@ -69,9 +69,18 @@
 								},
 								"waitOnCompletion": true,
 								"parameters": {
-									"schema_par": "@{item().schemaName}",
-									"table_name_par": "@{item().tableName}",
-									"directory_par": "@{item().origem}/@{item().tipo_ingestao}/@{item().tableName}"
+									"schema_par": {
+										"value": "@{item().schemaName}",
+										"type": "Expression"
+									},
+									"table_name_par": {
+										"value": "@{item().tableName}",
+										"type": "Expression"
+									},
+									"directory_par": {
+										"value": "@{item().tableName}",
+										"type": "Expression"
+									}
 								}
 							}
 						}
@@ -116,8 +125,7 @@
 				"defaultValue": "bronze"
 			},
 			"directory_par": {
-				"type": "string",
-				"defaultValue": "Adventureworks/Incremental"
+				"type": "string"
 			}
 		},
 		"variables": {
